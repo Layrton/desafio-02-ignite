@@ -43,11 +43,10 @@ export const FormContainer = styled.section`
     }
 
     input {
-      background: ${(props) => props.theme['base-button']};
+      background: ${(props) => props.theme['base-input']};
       box-shadow: none;
       border: none;
       padding: 12px;
-      margin-bottom: 16px;
       border-radius: 4px;
     }
 
@@ -77,6 +76,55 @@ export const FormContainer = styled.section`
       grid-area: state;
     }
   }
+`
+
+export const InputStyled = styled.input`
+  flex: 1;
+  height: 100%;
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  padding: 0 0.75rem;
+  color: ${(props) => props.theme['base-text']};
+
+  &::placeholder {
+    color: ${(props) => props.theme['base-label']};
+  }
+`
+
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  background: ${(props) => props.theme['base-input']};
+  width: 100%;
+  height: 42px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+
+  > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 42px;
+    justify-content: center;
+  }
+
+  > p {
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -1rem;
+  }
+`
+
+export const OptionalText = styled.div`
+  font-size: 0.75rem;
+  margin-right: 0.75rem;
+  font-style: italic;
+  color: ${(props) => props.theme['base-label']};
 `
 
 export const AddressTitle = styled.div`
