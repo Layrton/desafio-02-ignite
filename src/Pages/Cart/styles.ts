@@ -32,14 +32,25 @@ export const FormContainer = styled.section`
     form {
       margin-top: 32px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr 1fr;
-      grid-template-areas:
-        'cep cep cep'
-        'street street street'
-        'number additional optionalinfo'
-        'neighborhood city state';
-      gap: 12px;
+      grid-template-columns: 200px auto 60px;
+      column-gap: 0.75rem;
+      row-gap: 1rem;
+      grid-auto-flow: dense;
+
+      > div {
+        border: 1px solid ${(props) => props.theme['base-button']};
+      }
+
+      .cep {
+        grid-column: span 3;
+        max-width: 12.5rem;
+      }
+      .street {
+        grid-column: span 3;
+      }
+      .additional {
+        grid-column: span 2;
+      }
     }
 
     input {
@@ -48,32 +59,15 @@ export const FormContainer = styled.section`
       border: none;
       padding: 12px;
       border-radius: 4px;
-    }
+      color: ${(props) => props.theme['base-text']};
+      border: 1px solid transparent;
+      height: 95%;
+      width: 95%;
 
-    .cep {
-      grid-area: cep;
-      width: 200px;
-    }
-    .street {
-      grid-area: street;
-    }
-    .number {
-      grid-area: number;
-    }
-    .additional {
-      grid-area: additional;
-    }
-    .optional {
-      grid-area: optionalinfo;
-    }
-    .neighborhood {
-      grid-area: neighborhood;
-    }
-    .city {
-      grid-area: city;
-    }
-    .state {
-      grid-area: state;
+      &:focus {
+        outline: red;
+        border: 1px solid ${(props) => props.theme['yellow-dark']};
+      }
     }
   }
 `
@@ -96,7 +90,6 @@ export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   position: relative;
   background: ${(props) => props.theme['base-input']};
   width: 100%;
@@ -116,7 +109,10 @@ export const InputWrapper = styled.div`
     color: red;
     font-size: 12px;
     position: absolute;
-    bottom: -1rem;
+    bottom: -1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 `
 
@@ -140,32 +136,21 @@ export const PaymentContainer = styled.div`
   flex-direction: column;
 `
 
-export const PaymentButtons = styled.div`
-  display: flex;
+export const PaymentMethodButtons = styled.div`
+  /* display: flex;
+  width: 100%;
   justify-content: space-around;
+  gap: 12px;
+  > p {
+    color: red;
+  } */  
 
-  > div {
-    background: ${(props) => props.theme['base-button']};
-    font-size: 12px;
-    display: flex;
-    padding: 16px;
-    margin-top: 48px;
-    width: 178px;
-    border-radius: 6px;
-    align-items: center;
-    gap: 12px;
-    color: ${(props) => props.theme['base-text']};
-    border: 1px solid transparent;
-
-    :hover {
-      cursor: pointer;
-      background: ${(props) => props.theme['base-hover']};
-    }
-
-    &.selected {
-      background: ${(props) => props.theme['purple-light']};
-      border: 1px solid ${(props) => props.theme.purple};
-    }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  > p {
+    grid-column: span 3;
+    color: red;
   }
 `
 

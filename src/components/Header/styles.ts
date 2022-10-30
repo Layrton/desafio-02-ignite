@@ -38,7 +38,7 @@ export const CartIcon = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  > a {
+  :first-child {
     display: flex;
     align-items: center;
     justify-content: center;

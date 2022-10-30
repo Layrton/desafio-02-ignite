@@ -6,8 +6,28 @@ import {
 } from './styles'
 import driverSVG from '../../../assets/driver.svg'
 import { MapPin, Timer, CurrencyDollar } from 'phosphor-react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { OrderData, paymentMethods } from '..'
+import { useEffect } from 'react'
+
+interface LocationType {
+  state: OrderData
+}
 
 export function CompletedOrder() {
+  const { state } = useLocation() as unknown as LocationType
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!state) {
+      navigate('/')
+    }
+  },[])
+
+  console.log(state)
+
+  if (!state) return <></>
+
   return (
     <CompletedOrderContainer>
       <AnnouncementContainer>
@@ -22,9 +42,9 @@ export function CompletedOrder() {
             </IconContainer>
             <div>
               <p>
-                Entregue em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entregue em <strong>{state.street}, {state.number}</strong>
               </p>
-              <p>Farrapos, Porto Alegre, RS</p>
+              <p>{state.neighborhood}, {state.city}, {state.state}</p>
             </div>
           </div>
           <div>
@@ -45,7 +65,7 @@ export function CompletedOrder() {
             <div>
               <p>Pagamento na entrega</p>
               <p>
-                <strong>Cartão de Crédito</strong>
+                <strong>{paymentMethods[state.paymentMethod].label}</strong>
               </p>
             </div>
           </div>

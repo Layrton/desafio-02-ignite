@@ -94,11 +94,17 @@ export const ProductsContainer = styled.section`
   }
 
   > div {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
     width: 100%;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
-    gap: 32px;
+    gap: 32px; */
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 2rem;
+    row-gap: 2.5rem;
+    margin-top: 3.5rem;
   }
 `

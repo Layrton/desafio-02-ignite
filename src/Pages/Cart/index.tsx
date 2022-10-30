@@ -7,11 +7,11 @@ import {
   InputStyled,
   InputWrapper,
   OptionalText,
-  PaymentButtons,
   PaymentContainer,
   PaymentTitle,
   PriceContainer,
   SeparatorContainer,
+  PaymentMethodButtons,
 } from './styles'
 import {
   MapPinLine,
@@ -26,20 +26,28 @@ import { CartContext } from '../../contexts/CartContext'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { PaymentMethodInput } from './PaymentMethod'
+import { useNavigate } from 'react-router-dom'
+
+enum PaymentMethods {
+  credit = 'credit',
+  debit = 'debit',
+  cash = 'cash'
+}
 
 const confirmOrderFormValidationSchema = zod.object({
   cep: zod.string().min(1, 'Informe o CEP'),
-  street: zod.string().min(1, 'Informe o Rua'),
+  street: zod.string().min(1, 'Informe a Rua'),
   number: zod.string().min(1, 'Informe o Número'),
   additional: zod.string(),
   neighborhood: zod.string().min(1, 'Informe o Bairro'),
   city: zod.string().min(1, 'Informe a Cidade'),
-  state: zod.string().min(1, 'Informe a UF'),
-  // paymentMethod: zod.nativeEnum(PaymentMethods, {
-  //   errorMap: () => {
-  //     return { message: 'Informe o método de pagamento' }
-  //   },
-  // }),
+  state: zod.string().min(1, 'Informe UF'),
+  paymentMethod: zod.nativeEnum(PaymentMethods, {
+    errorMap: () => {
+      return { message: 'Informe o método de pagamento' }
+    },
+  }),
 })
 
 export type OrderData = zod.infer<typeof confirmOrderFormValidationSchema>
@@ -54,8 +62,23 @@ interface ErrorType {
   }
 }
 
+export const paymentMethods = {
+  credit: {
+    label: 'Cartão de Crédito',
+    icon: <CreditCard size={16} />,
+  },
+  debit: {
+    label: 'Cartão de Débito',
+    icon: <Bank size={16} />,
+  },
+  cash: {
+    label: 'Dinheiro',
+    icon: <Money size={16} />,
+  },
+}
+
 export function Cart() {
-  const { cartItems, cartItemsTotal, amountOfItemsInCart } =
+  const { cartItems, cartItemsTotal, amountOfItemsInCart, cleanCart } =
     useContext(CartContext)
   const checkoutAmount = cartItemsTotal + 3.5
 
@@ -67,12 +90,17 @@ export function Cart() {
 
   const { errors } = formState as unknown as ErrorType
 
+  const navigate = useNavigate()
   function handleConfirmOrder(data: ConfirmOrderFormData) {
-    console.log(data)
+    navigate('/completed', {
+      state: data
+    })
+    cleanCart()
   }
 
+  const paymentMethodError = errors?.paymentMethod?.message as unknown as string
+
   return (
-    // <FormProvider>
     <CartContainer>
       <FormContainer
         className="container"
@@ -88,9 +116,8 @@ export function Cart() {
             </div>
           </AddressTitle>
           <form id="address-form">
-            <InputWrapper>
+            <InputWrapper className="cep">
               <InputStyled
-                className="cep"
                 type="text"
                 id="cep"
                 placeholder="CEP"
@@ -98,9 +125,8 @@ export function Cart() {
               />
               {errors && <p>{errors.cep?.message}</p>}
             </InputWrapper>
-            <InputWrapper>
+            <InputWrapper className="street">
               <InputStyled
-                className="street"
                 type="text"
                 id="street"
                 placeholder="Rua"
@@ -108,9 +134,8 @@ export function Cart() {
               />
               {errors && <p>{errors.street?.message}</p>}
             </InputWrapper>
-            <InputWrapper>
+            <InputWrapper className="number">
               <InputStyled
-                className="number"
                 type="text"
                 id="number"
                 placeholder="Número"
@@ -118,10 +143,9 @@ export function Cart() {
               />
               {errors && <p>{errors.number?.message}</p>}
             </InputWrapper>
-            <InputWrapper>
+            <InputWrapper className="additional">
               <div>
                 <InputStyled
-                  className="additional"
                   type="text"
                   id="additional"
                   placeholder="Complemento"
@@ -131,10 +155,8 @@ export function Cart() {
               </div>
               {errors && <p>{errors.additional?.message}</p>}
             </InputWrapper>
-
-            <InputWrapper>
+            <InputWrapper className="neighborhood">
               <InputStyled
-                className="neighborhood"
                 type="text"
                 id="neighborhood"
                 placeholder="Bairro"
@@ -142,9 +164,8 @@ export function Cart() {
               />
               {errors && <p>{errors.neighborhood?.message}</p>}
             </InputWrapper>
-            <InputWrapper>
+            <InputWrapper className="city">
               <InputStyled
-                className="city"
                 type="text"
                 id="city"
                 placeholder="Cidade"
@@ -152,9 +173,9 @@ export function Cart() {
               />
               {errors && <p>{errors.city?.message}</p>}
             </InputWrapper>
-            <InputWrapper>
+            <InputWrapper className="state">
               <InputStyled
-                className="state"
+                className="state-input"
                 type="text"
                 id="state"
                 placeholder="UF"
@@ -172,20 +193,20 @@ export function Cart() {
               <p>Informe o endereço onde deseja receber seu pedido</p>
             </div>
           </PaymentTitle>
-          <PaymentButtons>
-            <div className="credit">
-              <CreditCard size={16} />
-              CARTÃO DE CRÉDITO
-            </div>
-            <div className="debit">
-              <Bank size={16} />
-              CARTÃO DE DÉBITO
-            </div>
-            <div className="selected">
-              <Money size={16} />
-              DINHEIRO
-            </div>
-          </PaymentButtons>
+          <PaymentMethodButtons>
+            {Object.entries(paymentMethods).map(([key, { label, icon }]) => (
+              <PaymentMethodInput
+                key={label}
+                id={key}
+                icon={icon}
+                label={label}
+                value={key}
+                {...register('paymentMethod')}
+
+              />
+            ))}
+            {paymentMethodError && <p>{paymentMethodError}</p>}
+          </PaymentMethodButtons>
         </PaymentContainer>
       </FormContainer>
       <CheckoutContainer>
@@ -230,6 +251,5 @@ export function Cart() {
         </div>
       </CheckoutContainer>
     </CartContainer>
-    // </FormProvider>
   )
 }

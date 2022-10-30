@@ -42,6 +42,10 @@ export const AmountPickerContainer = styled.div`
     padding: 8px;
     font-size: 12px;
     gap: 4px;
+
+    :hover{
+      cursor: pointer;
+    }
   }
 `
 
@@ -62,13 +66,17 @@ export const AmountPicker = styled.div`
     justify-content: center;
     color: ${(props) => props.theme.purple};
     height: 100%;
+    outline: none;
+    border: none;
+    background: ${(props) => props.theme['base-button']};
 
     > :first-child {
       color: ${(props) => props.theme.purple};
-    }
-    :hover {
+      :hover {
       cursor: pointer;
       color: ${(props) => props.theme['purple-dark']};
     }
+    }
+    
   }
 `

@@ -21,12 +21,14 @@ export function Header() {
           <MapPin size={22} weight="fill" />
           <span>Rio de Janeiro, RJ</span>
         </LocationContainer>
-        <CartIcon>
+        
           <NavLink to="/cart" title="Carrinho">
-            {amountOfItemsInCart >= 1 && <div>{amountOfItemsInCart}</div>}
-            <ShoppingCart size={22} weight="fill" />
+            <CartIcon>
+              {amountOfItemsInCart >= 1 && <div>{amountOfItemsInCart}</div>}
+              <ShoppingCart size={22} weight="fill" />
+            </CartIcon>
           </NavLink>
-        </CartIcon>
+       
       </nav>
     </HeaderContainer>
   )

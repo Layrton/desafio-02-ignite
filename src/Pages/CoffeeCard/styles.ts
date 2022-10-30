@@ -88,8 +88,13 @@ export const IconWrapper = styled.button`
   width: 100%;
   height: 100%;
   border: none;
-  .plus {
+  background-color: ${(props) => props.theme['base-button']};
+  border-radius: 6px;
+
+  &.plus {
     transition: 0.1s;
+    color: ${(props) => props.theme['purple']};
+
 
     &:hover {
       cursor: pointer;
@@ -97,8 +102,10 @@ export const IconWrapper = styled.button`
     }
   }
 
-  .minus {
+  &.minus {
     transition: 0.1s;
+    color: ${(props) => props.theme['purple']};
+
 
     &:hover {
       /* background: ${(props) => props.theme.purple}; */

@@ -37,13 +37,13 @@ export function CheckoutItem({ coffee }: CoffeeCartCheckoutProps) {
           <p>{coffee.title}</p>
           <AmountPickerContainer>
             <AmountPicker>
-              <div className="minus" onClick={handleDecrease}>
+              <button className="minus" disabled={coffee.quantity <=1} onClick={handleDecrease}>
                 <Minus size={14} weight="fill" />
-              </div>
+              </button>
               <div>{coffee.quantity}</div>
-              <div className="plus" onClick={handleIncrease}>
+              <button className="plus" onClick={handleIncrease}>
                 <Plus size={14} weight="fill" />
-              </div>
+              </button>
             </AmountPicker>
             <div onClick={handleRemove}>
               <Trash size={16} />

@@ -9,7 +9,7 @@ import {
   IconWrapper,
   PriceContainer,
 } from './styles'
-import { ShoppingCartSimple } from 'phosphor-react'
+import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
 import { CartContext, CoffeeProps } from '../../contexts/CartContext'
 import { useContext, useState } from 'react'
 
@@ -27,7 +27,7 @@ export function CoffeeCard({ coffee }: CoffeeProps) {
   function handleAddToCart() {
     const coffeeToAdd = {
       ...coffee,
-      quantity: 1,
+      quantity,
     }
     addItemToCart(coffeeToAdd)
   }
@@ -56,11 +56,11 @@ export function CoffeeCard({ coffee }: CoffeeProps) {
             disabled={quantity <= 1}
             className="minus"
           >
-            -
+            <Minus size={14} weight="fill" />
           </IconWrapper>
           <div>{quantity}</div>
           <IconWrapper onClick={handleIncrease} className="plus">
-            +
+          <Plus size={14} weight="fill" />
           </IconWrapper>
         </AmountPicker>
         <CartButton onClick={handleAddToCart}>
